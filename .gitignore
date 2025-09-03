@@ -181,3 +181,31 @@ $RECYCLE.BIN/
 *.zip
 *.tar.gz
 *.rar
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test artifacts & e2e tests
+test-artifacts/
+e2e.mjs
+
+# Playwright stuff
+playwright-report/
+playwright/.cache/
+
+# Local environment overrides
+.env
+.env.local
+.env.*.local
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Build output (if any in future)
+dist/
+build/
