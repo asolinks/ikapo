@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Gitty - Meme Wars Competition</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+  
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+  
+  <!-- QR Code Generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="nav-logo">🚀</span>
+        <span class="nav-title">Get Gitty</span>
+      </div>
+      <div class="nav-links">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#teams" class="nav-link">Teams</a>
+        <a href="#quiz" class="nav-link">Quiz</a>
+        <a href="#career" class="nav-link">Career</a>
+        <a href="#register" class="nav-link">Register</a>
+        <a href="#vote" class="nav-link vote-btn">Vote!</a>
+        <a href="#admin" class="nav-link admin-link" style="display:none;">Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Statistics -->
+  <section id="home" class="hero">
+    <div class="container">
+      <h1 class="hero-title">🎮 MEME WARS 2025 🎮</h1>
+      <p class="hero-subtitle">Where Git Gets Gitty!</p>
+      
+      <!-- Live Statistics -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-number" id="teamCount">0</div>
+          <div class="stat-label">Teams Competing</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="memeCount">0</div>
+          <div class="stat-label">Memes Submitted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="voteCount">0</div>
+          <div class="stat-label">Total Votes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="timeRemaining">00:00:00</div>
+          <div class="stat-label">Time Remaining</div>
+        </div>
+      </div>
+
+      <!-- Competition Status -->
+      <div class="competition-status">
+        <span class="status-indicator" id="statusIndicator"></span>
+        <span class="status-text" id="statusText" style="color:#047cec; font-weight: bolder">Competition Loading...</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teams Grid Section -->
+  <section id="teams" class="teams-section">
+    <div class="container">
+      <h2 class="section-title">🏆 Team Battleground</h2>
+      <div class="teams-grid" id="teamsGrid">
+        <!-- Team cards will be dynamically inserted here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Section -->
+  <section id="quiz" class="quiz-section">
+    <div class="container">
+      <h2 class="section-title">🎯 Goofy Git Quiz</h2>
+      <p class="section-subtitle">Test your skills and find your team role!</p>
+      
+      <div class="quiz-container" id="quizContainer">
+        <div class="quiz-start" id="quizStart">
+          <h3>Ready to Get Gitty?</h3>
+          <p>Answer these totally serious questions to determine your Git mastery level!</p>
+          <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+        </div>
+        
+        <div class="quiz-questions" id="quizQuestions" style="display:none;">
+          <div class="quiz-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="question-counter" id="questionCounter">Question 1 of 5</span>
+          </div>
+          
+          <div class="question-card">
+            <h3 id="questionText"></h3>
+            <div class="options" id="optionsContainer"></div>
+          </div>
+        </div>
+        
+        <div class="quiz-results" id="quizResults" style="display:none;">
+          <h3>Your Git Level:</h3>
+          <div class="result-badge" id="resultBadge"></div>
+          <p id="resultDescription"></p>
+          <button class="btn btn-secondary" onclick="retakeQuiz()">Retake Quiz</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Career Path Section -->
+  <section id="career" class="career-section">
+    <div class="container">
+      <h2 class="section-title">🚀 Your ICT Career Path</h2>
+      <p class="section-subtitle">Answer some quirky questions to discover your destiny!</p>
+      
+      <div class="career-quiz" id="careerQuiz">
+        <button class="btn btn-primary" onclick="startCareerQuiz()">Discover My Path</button>
+      </div>
+      
+      <div class="career-result" id="careerResult" style="display:none;">
+        <div class="career-card">
+          <h3 id="careerTitle"></h3>
+          <p id="careerDescription"></p>
+          <div class="career-skills" id="careerSkills"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Registration Section -->
+  <section id="register" class="register-section">
+    <div class="container">
+      <h2 class="section-title">📝 Team Registration</h2>
+      
+      <form id="registrationForm" class="registration-form">
+        <div class="form-group">
+          <label for="teamName">Team Name (Be Creative!)</label>
+          <input type="text" id="teamName" placeholder="e.g., Git Happens" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="department">Unit</label>
+            <select id="department" required>
+              <option value="">Select Unit</option>
+              <option value="CS">Computer Science</option>
+              <option value="IT">Information Processing Science</option>
+              <option value="EE">Electrical Electronics</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="faculty">Faculty</label>
+            <input type="text" id="faculty" placeholder="e.g., ITEE" required>
+          </div>
+        </div>
+        
+        <div class="team-members">
+          <h4>Team Members (3 Required)</h4>
+          <div class="member-input">
+            <input type="text" placeholder="Leader Name" id="member1" required>
+            <input type="email" placeholder="Leader Email" id="email1" required>
+            <span class="leader-badge">Team Leader</span>
+          </div>
+          <div class="member-input">
+            <input type="text" placeholder="Member 2 Name" id="member2" required>
+            <input type="email" placeholder="Member 2 Email" id="email2" required>
+          </div>
+          <div class="member-input">
+            <input type="text" placeholder="Member 3 Name" id="member3" required>
+            <input type="email" placeholder="Member 3 Email" id="email3" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Repository Name (Auto-generated)</label>
+          <div class="repo-name" id="repoName">[teamname]-meme-war</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="githubUsername">Team Leader's GitHub Username</label>
+          <input type="text" id="githubUsername" placeholder="e.g., johndoe" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-large">Register Team</button>
+      </form>
+      
+      <div class="registration-success" id="registrationSuccess" style="display:none;">
+        <h3>🎉 Registration Successful!</h3>
+        <p>Your team has been registered. Follow these steps:</p>
+        <ol>
+          <li>Fork the template repository</li>
+          <li>Rename it to: <code id="finalRepoName"></code></li>
+          <li>Enable GitHub Pages in Settings</li>
+          <li>Start creating your meme!</li>
+        </ol>
+        <a href="https://github.com/asolinks/meme-wars-template" target="_blank" class="btn btn-secondary">Go to Template Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Voting Section -->
+  <section id="vote" class="vote-section">
+    <div class="container">
+      <h2 class="section-title">🗳️ Vote Now!</h2>
+      
+      <div class="vote-container">
+        <div class="qr-section">
+          <h3>Scan to Vote on Mobile</h3>
+          <div id="voteQRCode" class="qr-code"></div>
+          <p class="vote-url" id="voteURL"></p>
+        </div>
+        
+        <div class="vote-interface">
+          <h3>Cast Your Vote</h3>
+          <p>Click on any team's vote button in the grid above!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leaderboard -->
+  <section class="leaderboard-section">
+    <div class="container">
+      <h2 class="section-title">🏅 Team Leaderboard</h2>
+      <div class="leaderboard" id="leaderboard">
+        <!-- Leaderboard entries will be dynamically inserted -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin Section -->
+  <section id="admin" class="admin-section" style="display:none;">
+    <div class="container">
+      <h2 class="section-title">🔧 Admin Dashboard</h2>
+      
+      <div class="admin-login" id="adminLogin">
+        <input type="password" id="adminPassword" placeholder="Admin Password">
+        <button class="btn btn-primary" onclick="loginAdmin()">Login</button>
+      </div>
+      
+      <div class="admin-panel" id="adminPanel" style="display:none;">
+        <div class="admin-controls">
+          <button class="btn btn-success" onclick="startCompetition()">Start Competition</button>
+          <button class="btn btn-warning" onclick="pauseCompetition()">Pause Competition</button>
+          <button class="btn btn-danger" onclick="endCompetition()">End Competition</button>
+        </div>
+        
+        <div class="admin-stats">
+          <h3>Competition Statistics</h3>
+          <div id="adminStats"></div>
+        </div>
+        
+        <div class="admin-teams">
+          <h3>Registered Teams</h3>
+          <div id="adminTeams"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Get Gitty - ICT Oulu Workshop | Powered by ITEE</p>
+      <p class="footer-tagline">Remember: In Git We Trust! 🚀</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="firebase-config.js"></script>
+  <script  src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f4f6f8;
+  color: #333;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #0073e6, #00c6ff);
+  color: white;
+  padding: 40px 20px;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+header .logo {
+  height: 80px;
+  margin-bottom: 20px;
+}
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+header .tagline {
+  font-size: 1.2rem;
+  opacity: 0.85;
+}
+
+/* Main */
+main {
+  max-width: 1200px;
+  margin: -50px auto 0;
+  padding: 20px;
+}
+
+/* Intro Section */
+.intro {
+  background: white;
+  padding: 50px 20px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  margin-bottom: 50px;
+}
+.intro p {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+}
+.links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Buttons */
+.btn {
+  text-decoration: none;
+  font-weight: 600;
+  padding: 15px 35px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  color: white;
+}
+.gradient-btn {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+.gradient-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255,75,43,0.3);
+}
+
+/* Funders Section */
+.funders h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.funders-logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 50px; /* more spacing between logos */
+  align-items: center;
+}
+
+.funders-logos img {
+  max-height: 150px; /* bigger logos */
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.funders-logos img:hover {
+  transform: scale(1.15); /* subtle hover zoom */
+}
+
+
+/* Footer */
+footer {
+  background: #222;
+  color: #fff;
+  padding: 30px 20px;
+  margin-top: 50px;
+}
+footer p {
+  margin-bottom: 10px;
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+.social-icons img {
+  height: 25px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+.social-icons img:hover {
+  transform: scale(1.2);
+}
