@@ -33,6 +33,7 @@
         <a href="#quiz" class="nav-link">Quiz</a>
         <a href="#career" class="nav-link">Career</a>
         <a href="#register" class="nav-link">Register</a>
+        <a href="#leaderboard" class="nav-link" id="boardLink">Leaderboard</a>
         <a href="#vote" class="nav-link vote-btn">Vote!</a>
         <a href="#admin" class="nav-link admin-link" style="display:none;">Admin</a>
       </div>
@@ -284,5 +285,89 @@
   <!-- Scripts -->
   <script type="module" src="firebase-config.js"></script>
   <script  src="./app.js"></script>
+
+ <!-- Side Tabs / Slide-out Panel -->
+<div class="side-tabs">
+  <button class="side-tab" id="openSidePanel" title="Open Voting & Leaderboard" aria-expanded="false" aria-controls="sidePanel">🏁 Vote / Board</button>
+  <div class="side-panel" id="sidePanel" aria-hidden="true">
+    <div class="side-panel-header">
+      <strong>Leaderboard</strong>
+      <button class="side-close" id="closeSidePanel" aria-label="Close">✕</button>
+    </div>
+    <div class="side-panel-content">
+      <div id="miniLeaderboard" class="mini-leaderboard">
+        <!-- Top teams will be mirrored here -->
+      </div>
+
+      <div class="side-actions">
+        <button class="btn btn-primary" id="goVote">🗳️ Vote Now</button>
+        <button class="btn btn-secondary" id="goFullBoard">Open Full Board</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Side panel logic (kept inline so it works without touching app.js) -->
+<script>
+  (function () {
+    const panel = document.getElementById('sidePanel');
+    const openBtn = document.getElementById('openSidePanel');
+    const closeBtn = document.getElementById('closeSidePanel');
+    const mini = document.getElementById('miniLeaderboard');
+
+    function openPanel() {
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
+      openBtn.setAttribute('aria-expanded', 'false');
+      // mirror top 5 leaderboard rows if available
+      const full = document.getElementById('leaderboard');
+      if (full && full.children.length) {
+        mini.innerHTML = '';
+        [...full.children].slice(0, 5).forEach((row) => {
+          const clone = row.cloneNode(true);
+          clone.classList.remove('gold','silver','bronze');
+          clone.classList.add('mini-row');
+          mini.appendChild(clone);
+        });
+      } else {
+        mini.innerHTML = '<p style="opacity:.7">Leaderboard will appear when teams have votes.</p>';
+      }
+    }
+
+    function closePanel() {
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
+      openBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    openBtn.addEventListener('click', openPanel);
+    closeBtn.addEventListener('click', closePanel);
+
+    // Click outside to close
+    document.addEventListener('click', (e) => {
+      if (!panel.contains(e.target) && !openBtn.contains(e.target)) {
+        closePanel();
+      }
+    });
+
+    // Keyboard escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePanel();
+    });
+
+    // Actions
+    document.getElementById('goVote')?.addEventListener('click', () => {
+      closePanel();
+      document.getElementById('vote')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.getElementById('goFullBoard')?.addEventListener('click', () => {
+      closePanel();
+      document.querySelector('.leaderboard-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  })();
+</script>
+
+
 </body>
 </html>

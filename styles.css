@@ -351,7 +351,7 @@ body {
   margin-top: 15px;
 }
 
-.vote-section {
+.team-stats .vote-section {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -938,4 +938,122 @@ body {
   z-index: 10000;
   animation: slideIn 0.3s ease-out;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ==== Side Tabs / Slide-out Panel ==== */
+.side-tabs {
+  position: fixed;
+  right: 16px;
+  top: 40%;
+  z-index: 1200;
+}
+
+.side-tab {
+  display: inline-flex;
+  padding: 0 14px;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.side-tab::after {
+  content: none !important;
+  position: absolute;
+  right: 110%;
+  white-space: nowrap;
+  background: #333;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(-50%);
+  top: 50%;
+  transition: opacity .2s ease;
+}
+
+.side-tab:hover::after {
+  opacity: 1;
+}
+
+
+.side-tab:hover { transform: translateY(-2px) scale(1.03); }
+
+.side-panel {
+  position: fixed;
+  right: 16px;
+  top: 16px;
+  bottom: 16px;
+  width: min(380px, 92vw);
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+  transform: translateX(calc(100% + 16px));
+  transition: transform .28s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 1300;
+}
+
+.side-panel.open { transform: translateX(0); }
+
+.side-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.side-close {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.side-panel-content {
+  padding: 16px;
+  overflow: auto;
+}
+
+/* compact leaderboard rows inside the panel */
+.mini-leaderboard .leaderboard-entry,
+.mini-leaderboard .mini-row {
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+.mini-leaderboard .leaderboard-rank { font-size: 1.3rem; }
+.mini-leaderboard .leaderboard-team { font-size: 1rem; margin: 0; }
+.mini-leaderboard .leaderboard-votes { font-size: 1.1rem; }
+
+.side-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Hide floating tab on very small screens (use your navbar links instead) */
+@media (max-width: 768px) {
+  .side-tabs { display: none; }
 }
